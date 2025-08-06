@@ -1,21 +1,47 @@
 <?php 
-    $rutaBase = realpath(__DIR__ . '/../');
-    include ($rutaBase . '/core/init.php');
-    include_once$rutaBase . '/routes/routes_controller.php';
-    //echo 'ruta_raiz'. RUTA_RAIZ;
-    echo 'ruta_vistas'. RUTA_VISTAS;
-
     // Obtener la ruta desde la URL
-    $request = $_SERVER['REQUEST_URI'];
-    echo "rerquest_uri" . $request;
+    $GetRequest = $_SERVER['REQUEST_URI'];
+    echo "<br>REQUEST_URI: " . $GetRequest;
 
-    // Limpiar la ruta (remover `/public/` si es necesario)
-    $request = str_replace('/public', '', $request);
+    /* ===================
+            INCLUDES
+    ==================== */
+    $rutaBase = realpath(__DIR__ . '/../');
+    echo "RUTA BASE" . $rutaBase;
 
-    $request = trim($request, '/');
-    //echo $request;
+    include_once $rutaBase . '/app/modelos/ConecctionBD.php';
+    include $rutaBase . '/core/init.php';
+    include_once $rutaBase . '/core/Functions.php';
+    include_once $rutaBase . '/routes/Route_controller.php';
+
+/* =========================
+        INSTANCIAS y VARIABLES  GENERALES
+    ======================== */
+    $conectionInstance = ConnectionBD::getInstance();
+    $conexion = $conectionInstance->getConnection();
+
+    $routeInstance = new RouteController($conexion);
+    /* =========================
+        VARIABLES GENERALES
+    ======================== */
     
-    $vista = $request ?: 'inicio';
+    $routeInstance->routeHandler($GetRequest);    
+    $vista = $routeInstance->getView();
+  
+    echo "<br>";
+    echo "<br>";
+    echo "<br>";
+    echo"esta vista:" . $vista;
+
+    
+    
+
+    
+  
+    
+
+  
+  
 
     ?>
 <!DOCTYPE html>
@@ -30,10 +56,8 @@
 </body>
 </html>
 <?php
-    
-    $archivo = new RouteController();
-    $vista = $archivo->mostrarVista($vista);
-    include_once RUTA_VISTAS . '/' . $vista . '.php';
+    // Cargar la vista correspondiente
+        include_once RUTA_VISTAS . '/' . $vista . '.php';
 
 ?>
 

@@ -13,7 +13,7 @@
 class ConnectionBD {
     // Configuración de la conexión (deberías mover esto a un archivo de configuración)
     private const DB_HOST = 'localhost';
-    private const DB_NAME = 'plaza';
+    private const DB_NAME = 'enrutador';
     private const DB_USER = 'root';
     private const DB_PASS = '';
     private const DB_CHARSET = 'utf8mb4';
