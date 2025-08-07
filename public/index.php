@@ -33,7 +33,7 @@
     echo "<br>";
     echo "<br>";
     echo"esta vista:" . $vista;
-  echo password_hash('1234', PASSWORD_DEFAULT);
+    //echo password_hash('1234', PASSWORD_DEFAULT);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
@@ -47,15 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<br>";
     echo "<br>";
     echo "<pre>";
-    echo("el data" . $data);
+    //print_r($data);
+    echo "el data: " . $data['status'];
     echo "</pre>";
 
 
-    if ($aut->authenticate($usuario, $contrasena)) {
+    if ($data['status']) {
         setcookie('usuario', $usuario, time() + 3600, '/'); // 1 hora
-        //header('Location: dashboard.php');
+        $vista = $data['vista'];
         
-        exit;
+      
     } else {
         echo "<h1>el usuario  NO  existe</h1>";
     }

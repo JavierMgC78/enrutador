@@ -1,1 +1,1 @@
-<h1>dashboard</h1>
+<h1 style="color:red;">dashboard</h1>

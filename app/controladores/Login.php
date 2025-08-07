@@ -18,16 +18,24 @@ class Login{
         $stmt->bindParam(':usuario', $user);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        //return $data;
+        
 
-        if (password_verify($contrasena, $data['contrasena'])) {
-            setcookie('usuario', $user['usuario'], time() + 28800, '/', '', false, true); // 8 horas, HttpOnly
+        $validacion = password_verify($contrasena, $data['contrasena']);
+        //return $validacion;
+
+
+        if ($validacion) {
+            setcookie('usuario', $data['usuario'], time() + 28800, '/', domain: '', secure: false, httponly: true); // 8 horas, HttpOnly
             
             //header('Location: /app/vistas/dashboard.php');
-            
-            return true;
+            return [
+                'status' => true,
+                'vista' => 'dashboard'];
+           
         } else {
-            return false;
+            return [
+                'status' => false,
+                'vista' => 'index'];
         }
     }
 }
