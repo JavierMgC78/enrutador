@@ -11,7 +11,7 @@
 
             <div style="margin-bottom: 30px;">
                 <label for="password" style="display:block; margin-bottom: 5px; color: var(--text-secondary); font-weight: 600;">Contraseña</label>
-                <input type="password" id="password" name="password" required style="width: 100%; padding: 12px 15px; border-radius: 10px; border: none; background: #1a1a1a; color: var(--text-primary); outline: none;">
+                <input type="password" id="password" name="contrasena" required style="width: 100%; padding: 12px 15px; border-radius: 10px; border: none; background: #1a1a1a; color: var(--text-primary); outline: none;">
             </div>
 
             <div style="text-align: center;">
