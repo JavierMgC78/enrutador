@@ -1,11 +1,10 @@
-#Activa el motor de reescritura de URLs (mod_rewrite).
-#Esto es necesario para que cualquier regla RewriteRule funcione.
-#Sin esta línea, las reglas no tendrán efecto.
-
+# /.htaccess (raíz)
 RewriteEngine On
 
-# Define la carpeta pública como punto de entrada
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Deja pasar archivos y directorios reales
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-RewriteRule ^(.*)$ public/index.php [QSA,L]
+# Reescribe todo hacia public/index.php SIN cambiar la URL
+RewriteRule ^ public/index.php [QSA,L]

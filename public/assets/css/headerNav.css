@@ -1,0 +1,109 @@
+:root{
+      /* Colores institucionales */
+      --cea-azul:#003D80;         /* Primaria */
+      --cea-amarillo:#EFBE44;     /* Preescolar */
+      --cea-rojo:#711417;         /* Secundaria (rojo quemado) */
+      --cea-midnight:#191970;     /* Azul medianoche */
+      --cea-blanco:#FFFFFF;
+      --cea-negro:#000000;
+
+      /* Tokens UI */
+      --bg: rgba(255,255,255,0.7);
+      --text:#101828;
+      --muted:#667085;
+      --ring: color-mix(in oklab, var(--cea-azul) 70%, white);
+      --shadow: 0 8px 30px rgba(2,18,54,.08);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+   
+    /* ===== Header ===== */
+    .header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter:saturate(140%) blur(12px);
+      -webkit-backdrop-filter:saturate(140%) blur(12px);
+      background:var(--bg);
+      border-bottom:1px solid color-mix(in oklab, var(--cea-azul) 10%, transparent);
+    }
+
+    .nav{ max-width:1200px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:16px; }
+
+    .brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .brand-logo{
+      width:44px; height:44px; border-radius:50%;
+      background: conic-gradient(from 220deg, var(--cea-azul), var(--cea-azul) 33%, var(--cea-amarillo) 33%, var(--cea-amarillo) 66%, var(--cea-rojo) 66%);
+      box-shadow: inset 0 0 0 3px #fff, var(--shadow);
+    }
+    .brand-title{ font-family:"Poiret One", system-ui; font-size:1.25rem; letter-spacing:.5px; color:var(--cea-midnight); font-weight:700 }
+    .brand-sub{ font-size:.72rem; color:var(--muted); margin-top:-2px }
+
+    /* Desktop menu */
+    .menu{ margin-left:auto; display:flex; align-items:center; gap:4px }
+    .menu a,
+    .menu button{
+      appearance:none; border:none; background:transparent; color:var(--text); font:500 0.96rem/1 "Roboto";
+      padding:10px 14px; border-radius:12px; cursor:pointer; text-decoration:none; position:relative;
+    }
+    .menu a:is(:hover,:focus-visible),
+    .menu button:is(:hover,:focus-visible){ outline:none; background:color-mix(in oklab, var(--cea-azul) 6%, transparent) }
+
+    /* Underline accent */
+    .menu a::after, .menu button::after{
+      content:""; position:absolute; left:12px; right:12px; bottom:6px; height:2px; border-radius:2px; transform:scaleX(0); transform-origin:left;
+      transition:transform .28s ease;
+      background:linear-gradient(90deg,var(--cea-amarillo),var(--cea-azul),var(--cea-rojo));
+    }
+    .menu a:hover::after, .menu a:focus-visible::after, .menu button:hover::after, .menu button:focus-visible::after{ transform:scaleX(1) }
+
+    /* CTA */
+    .cta{ margin-left:6px; padding:10px 16px; border-radius:999px !important; background:var(--cea-azul); color:white !important; font-weight:600 }
+    .cta:hover, .cta:focus-visible{ background:color-mix(in oklab, var(--cea-azul) 85%, black); box-shadow:0 6px 20px rgba(0,61,128,.25) }
+
+    /* Dropdown */
+    .dropdown{ position:relative }
+    .dropdown[open] > summary{ background:color-mix(in oklab, var(--cea-azul) 6%, transparent) }
+    .dropdown summary{ list-style:none; display:flex; align-items:center; gap:8px; }
+    .dropdown summary::-webkit-details-marker{ display:none }
+    .chev{ inline-size:10px; block-size:10px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .22s ease }
+    .dropdown[open] .chev{ transform:rotate(-135deg) translateY(2px) }
+
+    .submenu{ position:absolute; top:calc(100% + 10px); right:0; min-width:240px; padding:10px; border-radius:16px; background:white; box-shadow:var(--shadow); border:1px solid rgba(2,18,54,.06);
+      display:grid; gap:6px; }
+    .submenu a{ display:flex; align-items:center; justify-content:space-between; border-radius:12px; padding:10px 12px; text-decoration:none; color:var(--text); }
+    .pill{ inline-size:.65rem; block-size:.65rem; border-radius:50% }
+    .pill.pre{ background:var(--cea-amarillo) }
+    .pill.pri{ background:var(--cea-azul) }
+    .pill.sec{ background:var(--cea-rojo) }
+    .submenu a:hover{ background:color-mix(in oklab, var(--cea-azul) 6%, transparent) }
+
+    /* Mobile */
+    .hamb{ display:none; margin-left:auto; width:42px; height:42px; border-radius:12px; border:1px solid rgba(0,0,0,.06); background:white; box-shadow:var(--shadow); align-items:center; justify-content:center; }
+    .hamb span{ display:block; width:22px; height:2px; background:var(--cea-midnight); position:relative }
+    .hamb span::before, .hamb span::after{ content:""; position:absolute; left:0; width:22px; height:2px; background:inherit; }
+    .hamb span::before{ top:-7px } .hamb span::after{ top:7px }
+
+    #nav-toggle{ display:none }
+    @media (max-width: 960px){
+      .menu{ display:none }
+      .hamb{ display:inline-flex }
+      .mobile-panel{ position:fixed; inset:70px 12px auto 12px; background:white; border-radius:18px; border:1px solid rgba(2,18,54,.06); box-shadow:var(--shadow); padding:14px; display:none }
+      #nav-toggle:checked ~ .mobile-panel{ display:block }
+      .mobile-panel a{ display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:12px; text-decoration:none; color:var(--text) }
+      .mobile-panel hr{ border:none; border-top:1px solid rgba(2,18,54,.06); margin:10px 0 }
+      .mobile-badges{ display:flex; gap:8px }
+      .badge{ padding:4px 8px; border-radius:999px; font-size:.75rem; font-weight:600; }
+      .b-pre{ background:color-mix(in oklab, var(--cea-amarillo) 20%, white); color:#6d5606 }
+      .b-pri{ background:color-mix(in oklab, var(--cea-azul) 20%, white); color:#082242 }
+      .b-sec{ background:color-mix(in oklab, var(--cea-rojo) 20%, white); color:#471012 }
+      .mobile-cta{ display:block; text-align:center; background:var(--cea-azul); color:white; padding:12px; border-radius:14px; text-decoration:none; font-weight:700 }
+    }
+
+    /* Focus visible for a11y */
+    :is(a,button,summary):focus-visible{ outline:3px solid var(--ring); outline-offset:2px; }
+
+    /* Prefiere menos movimiento */
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{ transition:none !important; animation:none !important }
+    }

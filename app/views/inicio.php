@@ -1,5 +1,3 @@
-
-
  <!-- Partículas de fondo -->
     <div class="particles">
         <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
@@ -14,7 +12,13 @@
     </div>
 
     <!-- Navegación -->
-
+    <nav>
+        <ul>
+            <li><a href="/inicio">INICIO</a></li>
+            <li><a href="/nosotros">NOSOTROS</a></li>
+            <li><a href="/contacto">CONTACTO</a></li>
+        </ul>
+    </nav>
 
     <!-- Sección Hero -->
     <section class="hero-section">
@@ -45,7 +49,7 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Rápido</h3>
+                    <h3 class="feature-title">Ultra Rápido</h3>
                     <p class="feature-description">
                         Optimizado para máximo rendimiento con tiempos de respuesta increíblemente rápidos.
                     </p>

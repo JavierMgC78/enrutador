@@ -1,5 +1,5 @@
 <?php
-
+// dentro de la carpeta app/controladores
 class RouteController {
 
     private $whiteList; // lista blanca de dstinos
