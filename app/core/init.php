@@ -32,7 +32,8 @@ include_once ROUTE_MODELS . '/conexion.php';
 // incluir clase de login
 include_once ROUTE_CONTROLLERS . '/Login.php';
 
-
+// incluir clase de ViewController
+include_once ROUTE_CONTROLLERS . '/ViewController.php';
 
 
 

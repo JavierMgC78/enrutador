@@ -9,6 +9,10 @@ class Login{
         $this->conexion = $conexion;
     }
 
+
+
+
+    
     public function validateSessionFromCookie() 
     {
     
