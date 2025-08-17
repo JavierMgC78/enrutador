@@ -1,94 +1,64 @@
-<?php 
-    // 1) CARFAR ARCHIVO DE CONFIGURACIÓN INIT
-    $rutaBase = realpath(__DIR__ . '/../');
-    include $rutaBase . '/app/core/init.php';
+<?php
+declare(strict_types=1);
 
+// 1) BOOT
+$rutaBase = realpath(__DIR__ . '/../');
+require_once $rutaBase . '/app/core/init.php';
 
-    // 2 crear conexion a la base de datos
-    $conectionInstance = ConnectionBD::getInstance();
-    $conexion = $conectionInstance->getConnection();
+// 2) CONEXIÓN BD
+$conectionInstance = ConnectionBD::getInstance();
+$conexion = $conectionInstance->getConnection();
 
-    // 3) OBTENER LISTA BLANCA DE VISTAS
-    $viewControllerInstance = new ViewController($conexion);
-    $viewsWhiteList = $viewControllerInstance->getViewsWhiteList();
+// 3) CONTROLADOR
+//require_once $rutaBase . '/app/controllers/ViewsController.php'; // ajusta ruta/clase si usas otro nombre
+$vc = new ViewsController($conexion);
 
-    // 4) OBTENER FRS
-    //Tomar la ruta sin query string
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    // Detectar el "base path" real donde vive index (por ej. /public)
-    $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); // típicamente: /public
-    // Quitar el base path y slashes sobrantes -> obtener el FRS
-    $frs = preg_replace('#^' . preg_quote($basePath, '#') . '/?#', '', $uri);
-    $frs = trim($frs, '/'); 
-    if ($frs === '') { 
-        $frs = 'inicio'; // raíz => inicio
-    }
+// 4) PROCESAR REQUEST (extract -> sanitize -> assign)
+$vc->viewHandler(); // sin args: usa REQUEST_URI internamente
 
+// 5) RESOLVER VISTA Y STATUS
+$vista = $vc->getView();
+$meta  = $vc->getCurrentViewMeta();
+print_r($meta); // para depuración, puedes quitarlo después
+$viewsPath = defined('ROUTE_VIEWS') ? ROUTE_VIEWS : ($rutaBase . '/app/vistas');
+$file = $viewsPath . '/' . $vista . '.php';
 
+if ($vista === '404') {
+    http_response_code(404);
+} elseif ($vista === 'login') {
+    // Opciones:
+    // http_response_code(401); // si solo muestras la vista
+    // header('Location: /login'); exit; // si prefieres redireccionar
+}
 
-    //$conectionInstance = ConnectionBD::getInstance();
-    //$conexion = $conectionInstance->getConnection();
-    // 4) INSTANCIAR VIEWCONTROLLER
-    $viewInstance = new ViewController($conexion);
-    
+if (!is_file($file)) {
+    // Salvaguarda final
+    http_response_code(404);
+    $file = $viewsPath . '/404.php';
+}
 
-    $viewInstance->viewHandler($frs);
-    // 5) OBTENER VISTA
-    $vista = $viewInstance->getView();
-
-
-
-
-    $routeInstance = new RouteController($conexion);
-
-    // 4) Pasar SOLO el FRS (no la REQUEST_URI completa)
-    $routeInstance->routeHandler($frs);
-    
-    //$vista = $routeInstance->getView();
-
-    // 5) Login (si llega POST), antes de renderizar
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $usuario = $_POST['usuario'] ?? '';
-        $contrasena = $_POST['contrasena'] ?? '';  
-
-        $aut = new Login($conexion);
-        $data = $aut->authenticate($usuario, $contrasena);
-
-
-
-
-        if ($data['status']) {
-            setcookie('usuario', $usuario, time() + 3600, '/'); // 1 hora
-            $vista = $data['vista']; // por ejemplo 'dashboard'
-            // Opcionalmente, podrías hacer un redirect 303 para evitar reenvío de formulario
-            // header("Location: /{$vista}", true, 303); exit;
-        }else {
-
-
-        }
-    }
+// 6) META DINÁMICO
+$title = 'Mi App';
+$meta = $vc->getCurrentViewMeta();
+if (!empty($meta['view_name'])) {
+    $title = $meta['view_name'] . ' | Enrutador';
+}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <?php include_once ROUTE_VIEWS . '/partials_meta.php'; ?>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
+    <?php include_once $viewsPath . '/partials_meta.php'; ?>
+</head>
 <body>
-        <header>
-            <?php include_once (ROUTE_VIEWS . '/partials_headerNav.php'); ?>
-        </header>
 
-    <?php
-        // Cargar la vista correspondiente
-        echo "<br>";
-        echo "<br>";
-        echo "<br>";
-        echo $vista;
-        include_once ROUTE_VIEWS . '/' . $vista . '.php';
-
-    ?>
+    <header>
+        <?php include_once $viewsPath . '/partials_headerNav.php'; ?>
+    </header>
+    <main class="site-main">
+        <?php include $file; ?>
+    </main>
 
 
 </body>

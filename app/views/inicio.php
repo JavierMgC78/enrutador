@@ -11,14 +11,7 @@
         <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
     </div>
 
-    <!-- Navegación -->
-    <nav>
-        <ul>
-            <li><a href="/inicio">INICIO</a></li>
-            <li><a href="/nosotros">NOSOTROS</a></li>
-            <li><a href="/contacto">CONTACTO</a></li>
-        </ul>
-    </nav>
+
 
     <!-- Sección Hero -->
     <section class="hero-section">

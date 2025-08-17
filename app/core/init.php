@@ -23,6 +23,8 @@ define('URL_JS',     URL_ASSETS . 'js/');
 // ===== CARGAS CRÍTICAS
 require_once ROUTE_MODELS . '/ConecctionBD.php';
 require_once ROUTE_CONTROLLERS . '/Route_controller.php';
+require_once ROUTE_CONTROLLERS . '/ViewsController.php';
+require_once ROUTE_CONTROLLERS . '/PermissionController.php';
 require_once ROUTE_CORE . '/Functions.php';
 
 
@@ -33,7 +35,7 @@ include_once ROUTE_MODELS . '/conexion.php';
 include_once ROUTE_CONTROLLERS . '/Login.php';
 
 // incluir clase de ViewController
-include_once ROUTE_CONTROLLERS . '/ViewController.php';
+include_once ROUTE_CONTROLLERS . '/ViewsController.php';
 
 
 

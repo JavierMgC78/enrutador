@@ -24,22 +24,32 @@ body {
 
 /* ====== NAV GLOBAL ====== */
 nav {
-  position: fixed; top: 0; left: 0; right: 0;
+  /* Cambio clave: sticky en lugar de fixed para no superponer */
+  position: sticky; 
+  top: 0; left: 0; right: 0;
+
   background: rgba(26,26,26,0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(212,175,55,0.3);
-  z-index: 1000; padding: 0; transition: all .3s ease;
+  z-index: 1000;
+  padding: 0;
+  transition: all .3s ease;
 }
 nav::before {
-  content: ''; position: absolute; inset: 0;
+  content: '';
+  position: absolute; inset: 0;
   background: linear-gradient(90deg, transparent 0%, rgba(212,175,55,.1) 50%, transparent 100%);
   animation: shimmer 3s ease-in-out infinite;
+  /* Para que la lámina decorativa no bloquee clics en los enlaces */
+  pointer-events: none;
 }
 @keyframes shimmer { 0%,100%{opacity:0} 50%{opacity:1} }
 
 nav ul {
-  list-style: none; display: flex; justify-content: center; align-items: center;
-  max-width: 1200px; margin: 0 auto; padding: 0; position: relative; z-index: 2;
+  list-style: none;
+  display: flex; justify-content: center; align-items: center;
+  max-width: 1200px; margin: 0 auto; padding: 0;
+  position: relative; z-index: 2;
 }
 nav li { margin: 0; }
 nav a {
