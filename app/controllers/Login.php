@@ -9,18 +9,11 @@ class Login{
         $this->conexion = $conexion;
     }
 
-
-
-
-    
     public function validateSessionFromCookie() 
     {
     
     
     }
-
-
-
 
     public function authenticate($user, $contrasena)
     {

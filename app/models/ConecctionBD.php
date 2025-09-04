@@ -79,7 +79,7 @@ class ConnectionBD {
     /**
      * Devuelve la conexión PDO
      *
-     * @return PDO;
+     * @return PDO
      **/
     public function getConnection(): PDO {
         // Verifica si la conexión sigue activa

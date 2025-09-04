@@ -20,7 +20,7 @@ class ViewsController
     public function __construct(PDO $conexion)
     {
         // Carga whitelist desde DB (ajusta nombres de columnas si difieren)
-        $sql = "SELECT view_name, frs, require_login, min_access_level, fine_access, active
+        $sql = "SELECT id, view_name, frs, require_login, min_access_level, fine_access, active
                 FROM allowed_views
                 WHERE active = 1";
         $stmt = $conexion->prepare($sql);
@@ -40,7 +40,7 @@ class ViewsController
      * Punto de entrada del router por request.
      * Pipeline: extract -> sanitize -> assign (y aquí puedes añadir políticas de acceso).
      */
-    public function viewHandler(?string $requestUri = null): void
+    public function handler(?string $requestUri = null): void
     {
         // 1) Extraer FRS tal como viene en la URL
         $frs = $this->extractFrs($requestUri);
@@ -129,6 +129,6 @@ class ViewsController
     // -------- Getters útiles --------
     public function getView(): string { return $this->view; }
     /** @return array<string,mixed>|null */
-    public function getCurrentViewMeta(): ?array { return $this->currentViewMeta; }
+    public function ViewMetaData(): ?array { return $this->currentViewMeta; }
     public function isWhitelisted(): bool { return $this->inWhiteList; }
 }
