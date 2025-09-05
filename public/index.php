@@ -1,8 +1,16 @@
 <?php
+// configuracciones y valores de uso general
 declare(strict_types=1);
-// 1) INIT
 $rutaBase = realpath(__DIR__ . '/../');
+
+// 1) INIT
 require_once $rutaBase . '/app/core/init.php';
+// ) INIT_CONTROLLERS_INSTANCE
+require_once $rutaBase . '/app/core/init_controllers_instance.php';
+// 3) INIT_ALLOWED_VIEWS
+require_once $rutaBase . '/app/core/init_allowed_views.php';
+
+$allowedViews = $vc->requestAllowedViews();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){ 
     $user = $_POST['user'] ?? '';
@@ -13,6 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     
 
 }
+
+
+
 
 $title = 'Mi App';
 ?>

@@ -16,8 +16,16 @@ class FrontController
         $this->vc = $vc;
         $this->cc = $cc;
         $this->pc = $pc;
-        //valor prueba
-        $this->view = 'inicio';
+        // 1) Extraer FRS tal como viene en la URL
+        $frs = $this->vc->extractFrs();
+
+        // 2) Sanitizar para obtener el slug que usará la comparación
+        $sanitizedFrs = $this->vc->sanitizeFrs($frs);
+
+        // 3) Asignar vista (única fuente de verdad para $this->view)
+        $this->vc->assignView($sanitizedFrs);
+
+        $this->view = $this->vc->getView();
     }
 
 
@@ -27,13 +35,10 @@ class FrontController
      */
     public function handler(?string $requestUri = null): void
     {   
-      $this->vc->handler($requestUri);
+      //$this->vc->handler($requestUri);
+      //$this->view = $this->vc->getView();  
         
-
-
-
-
-   
+      
 
        
         // 4) (Opcional) Reglas de acceso: si requiere login y no está logueado -> LOGIN_VIEW

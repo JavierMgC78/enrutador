@@ -8,6 +8,7 @@ define('ROUTE_VIEWS', ROUTE_APP . '/views');
 define('ROUTE_MODELS', ROUTE_APP . '/models');
 define('ROUTE_CONTROLLERS', ROUTE_APP . '/controllers');
 define('SESSION_COOKIE_NAME', 'sessionCookie');
+
 // ===== URLS (públicas)
 // Detecta protocolo y host automáticamente
 $esHttps    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['SERVER_PORT'] ?? '') == 443);
@@ -20,6 +21,7 @@ define('URL_BASE',  ($esHttps ? 'https://' : 'http://') . $host . $basePath . '/
 define('URL_ASSETS', URL_BASE . 'assets/');
 define('URL_CSS',    URL_ASSETS . 'css/');
 define('URL_JS',     URL_ASSETS . 'js/');
+
 // ===== CARGAS CRÍTICAS
 require_once ROUTE_MODELS . '/ConecctionBD.php';
 require_once ROUTE_CONTROLLERS . '/Route_controller.php';
@@ -47,7 +49,6 @@ $vc = new ViewsController($conexion);
 // incluir clase de PermissionsController
 include_once ROUTE_CONTROLLERS . '/PermissionsController.php';
 $pc = new PermissionsController();
-
 
 // incluir clase de FrontController
 include_once ROUTE_CONTROLLERS . '/FrontController.php';

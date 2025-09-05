@@ -8,32 +8,19 @@ class ViewsController
     private const LOGIN_VIEW     = 'login'; // cámbiala si usas otro nombre
 
     /** @var array<int,array<string,mixed>> */
-    private array $viewsWhiteList = [];     // filas de allowed_views
+    private array $allowedViews = [];     // filas de allowed_views
     /** @var array<string,array<string,mixed>> */
     private array $viewsIndex     = [];     // slug => meta (índice O(1))
-
     private string $view          = self::DEFAULT_VIEW;
     private bool   $inWhiteList   = false;
     /** @var array<string,mixed>|null */
     private ?array $currentViewMeta = null;
-
+    private PDO    $conecction;
     public function __construct(PDO $conexion)
-    {
-        // Carga whitelist desde DB (ajusta nombres de columnas si difieren)
-        $sql = "SELECT id, view_name, frs, require_login, min_access_level, fine_access, active
-                FROM allowed_views
-                WHERE active = 1";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute();
-        $this->viewsWhiteList = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        {$this->conecction = $conexion;
+        
 
-        // Construye índice slug => meta (usa 'frs' si existe; si no, 'view_name')
-        foreach ($this->viewsWhiteList as $row) {
-            $slug = strtolower((string)($row['frs'] ?? $row['view_name'] ?? ''));
-            if ($slug !== '') {
-                $this->viewsIndex[$slug] = $row;
-            }
-        }
+
     }
 
     /**
@@ -113,7 +100,7 @@ class ViewsController
     {
         $meta = $this->viewsIndex[$sanitizedFrs] ?? null;
 
-        $this->inWhiteList     = ($meta !== null);
+        $this->inWhiteList     = $meta !== null;
         $this->currentViewMeta = $meta;
         $this->view            = $this->inWhiteList ? $sanitizedFrs : self::NOT_FOUND_VIEW;
     }
@@ -124,6 +111,26 @@ class ViewsController
     private function isLoggedIn(): bool
     {
         return !empty($_COOKIE['usuario_id'] ?? null);
+    }
+
+    public function requestAllowedViews(): array
+    {
+        // Carga whitelist desde DB (ajusta nombres de columnas si difieren)
+        $sql = "SELECT id, view_name, frs, require_login, min_access_level, fine_access, active
+                FROM allowed_views
+                WHERE active = 1";
+        $stmt = $this ->conecction->prepare($sql);
+        $stmt->execute();
+        $this->allowedViews = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+        // Construye índice slug => meta (usa 'frs' si existe; si no, 'view_name')
+        foreach ($this->allowedViews as $row) {
+            $slug = strtolower((string)($row['frs'] ?? $row['view_name'] ?? ''));
+            if ($slug !== '') {
+                $this->viewsIndex[$slug] = $row;
+            }
+        }
+        return $this->allowedViews;
     }
 
     // -------- Getters útiles --------
